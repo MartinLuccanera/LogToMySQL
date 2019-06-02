@@ -4,7 +4,9 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,8 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
@@ -28,6 +32,8 @@ public class ImportDAO {
     private static String tableName;
     private static String databaseName;
     private static long batchSize;
+
+    private final JdbcTemplate jdbcTemplate;
 
     /**
      * <p>Imports data from provided log file into MySQL database.</p>
@@ -44,9 +50,11 @@ public class ImportDAO {
         PreparedStatement preparedStatement = null;
 
         try {
+            // Establish connection.
             connection = DriverManager.getConnection(datasourceUrl, datasourceUsername, datasourcePassword);
             connection.createStatement();
 
+            // Set query
             StringBuilder sb = new StringBuilder("INSERT INTO \n")
                     .append(databaseName)
                     .append(".")
@@ -56,6 +64,7 @@ public class ImportDAO {
                     ;
             preparedStatement = connection.prepareStatement(sb.toString());
 
+            // Stream-read from CSV file
             Reader reader = Files.newBufferedReader(Paths.get(file));
             CSVParser csvParser = new CSVParser(
                     reader,
@@ -63,6 +72,8 @@ public class ImportDAO {
                             .withQuote(null)
                             .withDelimiter('|')
             );
+
+            // Assemble statement to store data in DB
             for (CSVRecord csvRecord : csvParser) {
                 // Accessing Values by Column Index
                 dateString = csvRecord.get(0);
@@ -85,6 +96,7 @@ public class ImportDAO {
 
                 preparedStatement.addBatch();
 
+                // When record count reaches batchSize, send to DB.
                 if (csvRecord.getRecordNumber() % batchSize == 0) {
                     preparedStatement.executeBatch();
                 }
@@ -105,6 +117,31 @@ public class ImportDAO {
                 logger.error("failed to close DB connection", e);
             }
         }
+    }
+
+    public void findAll() {
+
+        String sql = new StringBuilder(
+                "SELECT * FROM log l ")
+                .append("WHERE l.date BETWEEN ? AND ? ")
+                .append("GROUP BY l.ip ")
+                .append("HAVING count(l.ip) >= ?")
+                .toString();
+
+        List<Map<String, Object>> logRecords = jdbcTemplate.queryForList(sql
+                , "2017-01-01 03:00:00"
+                , "2017-01-01 04:00:00"
+                , "100"
+        );
+
+        for (Map<String, Object> logRecord : logRecords) {
+            System.out.println(logRecord);
+        }
+    }
+
+    @Autowired
+    public ImportDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Value("${spring.datasource.url}")

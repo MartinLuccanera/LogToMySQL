@@ -18,6 +18,7 @@ public class ParserApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) {
         importDAO.importLogIntoDB("access.log");
+        importDAO.findAll();
     }
 
     @Autowired
