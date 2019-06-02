@@ -1,0 +1,50 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <preConditions onFail="WARN">
+        <dbms type="mysql" />
+        <runningAs username="root" />
+    </preConditions>
+
+    <!-- <include file="changelog/01-load-log.xml" relativeToChangelogFile="true"/> -->
+    <!-- <include file="changelog/02-insert-data-authors.xml" relativeToChangelogFile="true"/> -->
+    <!-- <include file="changelog/02-insert-data-books.xml" relativeToChangelogFile="true"/> -->
+
+
+    <changeSet author="martin" id="1">
+        <createTable tableName="log">
+            <column type="INT" name="id">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="timestamp" name="date"/>
+            <column type="varchar(15)" name="ip"/>
+            <column type="varchar(150)" name="request"/>
+            <column type="int" name="status"/>
+            <column type="text" name="user_agent"/>
+        </createTable>
+        <createIndex
+                     indexName="idx_ip"
+                     tableName="log">
+            <column name="ip" type="varchar(15)"/>
+        </createIndex>
+        <createIndex
+                indexName="idx_date"
+                tableName="log">
+            <column name="date" type="timestamp"/>
+        </createIndex>
+        <addAutoIncrement columnDataType="int"
+                          columnName="id"
+                          incrementBy="1"
+                          schemaName="log_to_db"
+                          startWith="1"
+                          tableName="log"
+        />
+    </changeSet>
+
+</databaseChangeLog>
