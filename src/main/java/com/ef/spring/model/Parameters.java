@@ -1,16 +1,11 @@
 package com.ef.spring.model;
 
 import lombok.Getter;
-import net.bytebuddy.asm.Advice;
 import org.apache.log4j.Logger;
 import org.springframework.boot.ApplicationArguments;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -123,7 +118,6 @@ public class Parameters {
      * @return Properly formatted end-date.
      */
     private LocalDateTime calculateEndDate(String duration, LocalDateTime startDate) {
-        Date newDate;
 
         //This could have been done in many different ways [State pattern, enums, etc]. Chose this one for speed
         // and readability.
@@ -133,8 +127,8 @@ public class Parameters {
             case DURATION_DAILY:
                 return startDate.plusDays(1L);
             default:
-                throw new IllegalArgumentException(new StringBuilder(
-                        "Illegal parameter \"")
+                throw new IllegalArgumentException(new StringBuilder
+                        ("Illegal parameter \"")
                         .append(DURATION_PARAM)
                         .append("\" with value: ")
                         .append(duration).append("\n")

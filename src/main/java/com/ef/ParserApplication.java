@@ -17,14 +17,10 @@ public class ParserApplication implements ApplicationRunner {
     private final LogDAO logDAO;
     private final LogUtils logUtils;
 
-    //TODO: Calculate length of csv. Check length of DB. Import or skip
-    // -> https://stackoverflow.com/questions/30624727/what-is-the-fastest-way-to-get-dimensions-of-a-csv-file-in-java
     //TODO: resume previous data load?
-    // TODO: Check how to instantiate Parameters and run queries
-    // Profit?
-
     //TODO: Tests?
-
+    // Profit?
+    
     public static void main(String... args) {
 		SpringApplication.run(ParserApplication.class, args);
 	}

@@ -53,6 +53,7 @@ public class LogDAO {
 
         try {
             // Establish connection.
+            //TODO: Change this for jdbcTemplate -> investigate how to do batching.
             connection = DriverManager.getConnection(datasourceUrl, datasourceUsername, datasourcePassword);
             connection.createStatement();
 
