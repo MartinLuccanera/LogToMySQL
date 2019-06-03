@@ -46,5 +46,33 @@
                           tableName="log"
         />
     </changeSet>
+    <changeSet author="martin" id="2">
+        <createTable tableName="log_comments">
+            <column type="INT" name="id">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="int" name="log_id"/>
+            <column type="text" name="comment"/>
+        </createTable>
+        <addAutoIncrement columnDataType="int"
+                          columnName="id"
+                          incrementBy="1"
+                          schemaName="log_to_db"
+                          startWith="1"
+                          tableName="log_comments"
+        />
+        <addForeignKeyConstraint baseColumnNames="log_id"
+                                 baseTableName="log_comments"
+                                 constraintName="fk_log_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="log"/>
+        <createIndex
+                indexName="idx_log_id"
+                tableName="log_comments">
+            <column name="log_id" type="int"/>
+        </createIndex>
+    </changeSet>
 
 </databaseChangeLog>

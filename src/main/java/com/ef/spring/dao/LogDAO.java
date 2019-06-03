@@ -31,6 +31,7 @@ public class LogDAO {
     private static String datasourceUsername;
     private static String datasourcePassword;
     private static String tableName;
+    private static String commentsTableName;
     private static String databaseName;
     private static long batchSize;
 
@@ -137,6 +138,26 @@ public class LogDAO {
 
         for (Map<String, Object> logRecord : logRecords) {
             System.out.println(logRecord);
+
+            jdbcTemplate.update(
+                    new StringBuilder("INSERT INTO \n")
+                            .append(databaseName)
+                            .append(".")
+                            .append(commentsTableName)
+                            .append("(log_id, comment)")
+                            .append(" VALUES (?, ?)")
+                            .toString()
+                    ,logRecord.get("id"),
+                    new StringBuilder("IP: ")
+                            .append(logRecord.get("ip"))
+                            .append(" reached over ")
+                            .append(parameters.getThreshold())
+                            .append(" requests between ")
+                            .append(parameters.getStartDateAsString())
+                            .append(" and ")
+                            .append(parameters.getEndDateAsString())
+                            .append(".\nAs a security measure, it has been blocked")
+            );
         }
     }
 
@@ -178,5 +199,10 @@ public class LogDAO {
     @Value("${spring.datasource.table.name}")
     public void setTableName(String name) {
         tableName = name;
+    }
+
+    @Value("${spring.datasource.comments.table.name}")
+    public void setCommentsTableName(String name) {
+        commentsTableName = name;
     }
 }
