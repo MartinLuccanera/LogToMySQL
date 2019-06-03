@@ -28,8 +28,11 @@ public class ParserApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) {
         Parameters parameters = new Parameters(args);
-        //importDAO.importLogIntoDB("access.log");
-        //importDAO.findAll();
+        //TODO: add process continuation??? ->
+        if (parameters.getAccessLog() != null) {
+            importDAO.importLogIntoDB(parameters.getAccessLog());
+        }
+        importDAO.findAll(parameters);
     }
 
     @Autowired

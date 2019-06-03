@@ -15,4 +15,6 @@ public class Constants {
 
     public static final ImmutableList<String> REQUIRED_PARAMS =
             ImmutableList.of(START_DATE_PARAM, DURATION_PARAM, THRESHOLD_PARAM);
+    public static String DATE_FORMAT_INPUT = "yyyy-MM-dd.HH:mm:ss";
+    public static String DATE_FORMAT_OUTPUT = "yyyy-MM-dd HH:mm:ss";
 }
