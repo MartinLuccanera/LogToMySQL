@@ -24,7 +24,7 @@ import java.util.Map;
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
 public class ImportDAO {
-    private final static Logger logger = Logger.getLogger(ImportDAO.class);
+    private final static Logger log = Logger.getLogger(ImportDAO.class);
 
     private static String datasourceUrl;
     private static String datasourceUsername;
@@ -104,17 +104,17 @@ public class ImportDAO {
 
             preparedStatement.executeBatch();
         } catch (SQLException e) {
-            logger.error("failed retrieving connection to: " + datasourceUrl, e);
+            log.error("failed retrieving connection to: " + datasourceUrl, e);
         } catch (ParseException e) {
-            logger.error("Failed to parse date: " + dateString, e);
+            log.error("Failed to parse date: " + dateString, e);
         } catch (IOException e) {
-            logger.error("failed to open source file: " + file, e);
+            log.error("failed to open source file: " + file, e);
         } finally {
             try {
                 if (preparedStatement != null) preparedStatement.close();
                 if (connection != null) connection.close();
             } catch (SQLException e) {
-                logger.error("failed to close DB connection", e);
+                log.error("failed to close DB connection", e);
             }
         }
     }
