@@ -1,5 +1,6 @@
 package com.ef.spring.dao;
 
+import com.ef.spring.model.Parameters;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -119,7 +120,7 @@ public class ImportDAO {
         }
     }
 
-    public void findAll() {
+    public void findAll(Parameters parameters) {
 
         String sql = new StringBuilder(
                 "SELECT * FROM log l ")
@@ -128,10 +129,10 @@ public class ImportDAO {
                 .append("HAVING count(l.ip) >= ?")
                 .toString();
 
-        List<Map<String, Object>> logRecords = jdbcTemplate.queryForList(sql
-                , "2017-01-01 03:00:00"
-                , "2017-01-01 04:00:00"
-                , "100"
+        List<Map<String, Object>> logRecords = jdbcTemplate.queryForList(sql,
+                parameters.getStartDateAsString(), //"2017-01-01 03:00:00",
+                parameters.getEndDateAsString(), //"2017-01-01 04:00:00",
+                String.valueOf(parameters.getThreshold()) //"100"
         );
 
         for (Map<String, Object> logRecord : logRecords) {
