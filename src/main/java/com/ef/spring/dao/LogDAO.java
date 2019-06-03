@@ -140,6 +140,11 @@ public class LogDAO {
         }
     }
 
+    public Long getRecordCountFromLogTable() {
+        String sql = "SELECT COUNT(id) FROM log";
+        return jdbcTemplate.queryForObject(sql, Long.class);
+    }
+
     @Autowired
     public LogDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
