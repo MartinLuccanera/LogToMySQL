@@ -24,8 +24,8 @@ import java.util.Map;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
-public class ImportDAO {
-    private final static Logger log = Logger.getLogger(ImportDAO.class);
+public class LogDAO {
+    private final static Logger log = Logger.getLogger(LogDAO.class);
 
     private static String datasourceUrl;
     private static String datasourceUsername;
@@ -141,7 +141,7 @@ public class ImportDAO {
     }
 
     @Autowired
-    public ImportDAO(JdbcTemplate jdbcTemplate) {
+    public LogDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

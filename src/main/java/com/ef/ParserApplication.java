@@ -1,7 +1,7 @@
 package com.ef;
 
 import com.ef.spring.model.Parameters;
-import com.ef.spring.dao.ImportDAO;
+import com.ef.spring.dao.LogDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ParserApplication implements ApplicationRunner {
 
-    private final ImportDAO importDAO;
+    private final LogDAO logDAO;
 
     //TODO: Calculate length of csv. Check length of DB. Import or skip
     // -> https://stackoverflow.com/questions/30624727/what-is-the-fastest-way-to-get-dimensions-of-a-csv-file-in-java
@@ -30,13 +30,13 @@ public class ParserApplication implements ApplicationRunner {
         Parameters parameters = new Parameters(args);
         //TODO: add process continuation??? ->
         if (parameters.getAccessLog() != null) {
-            importDAO.importLogIntoDB(parameters.getAccessLog());
+            logDAO.importLogIntoDB(parameters.getAccessLog());
         }
-        importDAO.findAll(parameters);
+        logDAO.findAll(parameters);
     }
 
     @Autowired
-    public ParserApplication(ImportDAO importDAO) {
-        this.importDAO = importDAO;
+    public ParserApplication(LogDAO logDAO) {
+        this.logDAO = logDAO;
     }
 }
