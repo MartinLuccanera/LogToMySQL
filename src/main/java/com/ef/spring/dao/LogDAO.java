@@ -22,6 +22,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * <p> DAO for querying and manipulating application representations of logs.</p>
+ *
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
 public class LogDAO {
@@ -38,7 +42,7 @@ public class LogDAO {
     private final JdbcTemplate jdbcTemplate;
 
     /**
-     * <p>Imports data from provided log file into MySQL database.</p>
+     * <p>Imports data from provided log file into database.</p>
      *
      * @param file log file to get records from.
      */
@@ -53,7 +57,6 @@ public class LogDAO {
 
         try {
             // Establish connection.
-            //TODO: Change this for jdbcTemplate -> investigate how to do batching.
             connection = DriverManager.getConnection(datasourceUrl, datasourceUsername, datasourcePassword);
             connection.createStatement();
 

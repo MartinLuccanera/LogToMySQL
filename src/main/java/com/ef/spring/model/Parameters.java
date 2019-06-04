@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 import static com.ef.spring.model.Constants.*;
 
@@ -27,7 +26,7 @@ public class Parameters {
 
     /**
      * <p>Implementation of parameters received via console.
-     * Checks for validity/existence and keeps through like-cycle.</p>
+     * Checks for validity/existence and stores values through process' life-cycle.</p>
      *
      * @param args User-issued arguments.
      */

@@ -17,10 +17,6 @@ public class ParserApplication implements ApplicationRunner {
     private final LogDAO logDAO;
     private final LogUtils logUtils;
 
-    //TODO: resume previous data load?
-    //TODO: Tests?
-    // Profit?
-    
     public static void main(String... args) {
 		SpringApplication.run(ParserApplication.class, args);
 	}
@@ -28,7 +24,6 @@ public class ParserApplication implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws IOException{
         Parameters parameters = new Parameters(args);
-        //TODO: add process continuation??? ->
         if (parameters.getAccessLog() != null && !logUtils.isDatabasePopulated(parameters.getAccessLog())) {
             logDAO.importLogIntoDB(parameters.getAccessLog());
         }
