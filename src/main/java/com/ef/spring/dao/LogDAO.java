@@ -104,6 +104,7 @@ public class LogDAO {
 
                 // When record count reaches batchSize, send to DB.
                 if (csvRecord.getRecordNumber() % batchSize == 0) {
+                    log.info("Inserting batch " + csvRecord.getRecordNumber() + " into db: ");
                     preparedStatement.executeBatch();
                 }
             }
@@ -128,7 +129,7 @@ public class LogDAO {
     public void findAll(Parameters parameters) {
 
         String sql = new StringBuilder(
-                "SELECT * FROM log l ")
+                "SELECT l.ip FROM log l ")
                 .append("WHERE l.date BETWEEN ? AND ? ")
                 .append("GROUP BY l.ip ")
                 .append("HAVING count(l.ip) >= ?")
@@ -140,8 +141,10 @@ public class LogDAO {
                 String.valueOf(parameters.getThreshold()) //"100"
         );
 
+        log.info("\n\nFound " + logRecords.size() + " results.\n");
+
         for (Map<String, Object> logRecord : logRecords) {
-            System.out.println(logRecord);
+            log.info(logRecord);
 
             jdbcTemplate.update(
                     new StringBuilder("INSERT INTO \n")

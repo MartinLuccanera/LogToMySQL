@@ -12,13 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
 
 @SpringBootApplication
-public class ParserApplication implements ApplicationRunner {
+public class Parser implements ApplicationRunner {
 
     private final LogDAO logDAO;
     private final LogUtils logUtils;
 
     public static void main(String... args) {
-		SpringApplication.run(ParserApplication.class, args);
+		SpringApplication.run(Parser.class, args);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class ParserApplication implements ApplicationRunner {
     }
 
     @Autowired
-    public ParserApplication(LogDAO logDAO, LogUtils logUtils) {
+    public Parser(LogDAO logDAO, LogUtils logUtils) {
         this.logDAO = logDAO;
         this.logUtils = logUtils;
     }

@@ -37,8 +37,10 @@ public class Parameters {
                 !args.containsOption(DURATION_PARAM) ||
                 !args.containsOption(THRESHOLD_PARAM)
                 ) {
+            log.error("\nUsage: java -jar target/parser-0.0.1-SNAPSHOT.jar --accesslog=access.log" +
+                    "--startDate=2017-01-01.13:00:00 --duration=hourly --threshold=200\n");
             throw new IllegalArgumentException(new StringBuilder(
-                    "Illegal parameter count.\n")
+                    "\n\nIllegal parameter count.\n")
                     .append("Required params are: ")
                     .append(REQUIRED_PARAMS.toString())
                     .toString()
